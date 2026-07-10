@@ -1,0 +1,7 @@
+.git
+.github
+*.pdf
+*.md
+.hf
+__pycache__
+*.pyc

@@ -1,0 +1,20 @@
+# Local smoke test on a GPU box (needs nvidia-container-toolkit).
+# Overrides CMD to actually serve; on Flightbase you instead run `serve.sh` inside.
+services:
+  glm:
+    build: .
+    image: glm-vllm:local
+    command: ["/usr/local/bin/serve.sh"]
+    ports:
+      - "8000:8000"
+    environment:
+      HF_TOKEN: ${HF_TOKEN:-}          # needed to download weights from HF
+    volumes:
+      - ./.hf:/root/project/.hf        # cache weights across restarts
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
